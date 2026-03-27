@@ -17,11 +17,11 @@ import haxe.macro.Expr;
  * Example output for `totalArgs = 2`, `funcName = "fn"`, `argsName = "args"`:
  * ```haxe
  * switch (args.length) {
- *     case 0: fn();
- *     case 1: fn(args[0]);
- *     case 2: fn(args[0], args[1]);
- *     case 3: fn(args[0], args[1], args[2]);
- *     default: throw "Too many arguments";
+ * 	case 0: fn();
+ * 	case 1: fn(args[0]);
+ * 	case 2: fn(args[0], args[1]);
+ * 	case 3: fn(args[0], args[1], args[2]);
+ * 	default: throw "Too many arguments";
  * }
  * ```
  *

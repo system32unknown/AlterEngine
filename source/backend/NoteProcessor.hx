@@ -184,7 +184,6 @@ class NoteProcessor {
 				} else if (isPlayerNote) @:privateAccess game.noteMissCommon(target.noteData);
 			}
 
-			// Advance to the next unspawned note
 			if (game.unspawnNotes.length > ++totalCnt) target = game.unspawnNotes[totalCnt];
 			else break;
 			cacheSpawnInfo(target);

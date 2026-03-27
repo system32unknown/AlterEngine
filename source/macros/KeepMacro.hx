@@ -12,7 +12,7 @@ import haxe.macro.Context;
  */
 class KeepMacro {
 	public static function keep():Void {
-		var exc:Array<String> = [
+		final excludes:Array<String> = [
 			"flixel.addons.editors.spine",
 			"flixel.addons.nape",
 			"flixel.system.macros",
@@ -26,7 +26,7 @@ class KeepMacro {
 			"lime.tools",
 		];
 
-		var compathx4:Array<String> = [
+		final compathx4:Array<String> = [
 			"sys.db.Sqlite",
 			"sys.db.Mysql",
 			"sys.db.Connection",
@@ -52,7 +52,7 @@ class KeepMacro {
 			"backend", "shaders", "objects", "utils",
 			// BASE HAXE
 			"DateTools", "EReg", "Lambda", "StringBuf"
-		]) Compiler.include(inc, true, exc);
+		]) Compiler.include(inc, true, excludes);
 	}
 }
 #end

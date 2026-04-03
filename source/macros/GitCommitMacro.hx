@@ -52,7 +52,7 @@ class GitCommitMacro {
 		#if !LIME_DISPLAY
 		var pos:Position = Context.currentPos();
 		try {
-			var proc:Process = new Process('git', ['branch', '--show-current'], false);
+			var proc:Process = new Process('git', ['branch', '--show-current']);
 			if (proc.exitCode() != 0) Context.warning('Could not determine current git commit; is this a proper Git repository?', pos);
 			return macro $v{Std.parseInt(proc.stdout.readLine())};
 		} catch (e:Dynamic) Context.error(e.toString(), pos);

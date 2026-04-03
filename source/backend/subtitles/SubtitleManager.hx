@@ -9,7 +9,7 @@ class SubtitleManager extends FlxSpriteGroup {
 	 */
 	var subtitlesGroup:FlxTypedSpriteGroup<Subtitle> = new FlxTypedSpriteGroup<Subtitle>();
 
-	public function new() {
+	public function new():Void {
 		super();
 		add(subtitlesGroup);
 	}

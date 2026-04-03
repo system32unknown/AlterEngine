@@ -49,7 +49,7 @@ class KeepMacro {
 			#if sys "sys", #end
 			"json2object",
 			// BASE PATH LIBRARIES THAT DOESN'T INCLUDE
-			"backend", "shaders", "objects", "utils",
+			"backend", "shaders", "objects", "utils", "effects",
 			// BASE HAXE
 			"DateTools", "EReg", "Lambda", "StringBuf"
 		]) Compiler.include(inc, true, excludes);

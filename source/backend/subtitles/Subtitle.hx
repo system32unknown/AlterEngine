@@ -49,8 +49,6 @@ class Subtitle extends flixel.addons.text.FlxTypeText {
 	}
 
 	public function beginSubtitleEnd():Void {
-		FlxTimer.wait(data.duration, () -> {
-			FlxTween.tween(this, {alpha: 0}, .5, {onComplete: (tween:FlxTween) -> manager.onSubtitleComplete(this)});
-		});
+		FlxTimer.wait(data.duration, () -> FlxTween.tween(this, {alpha: 0}, .5, {onComplete: (tween:FlxTween) -> manager.onSubtitleComplete(this)}));
 	}
 }

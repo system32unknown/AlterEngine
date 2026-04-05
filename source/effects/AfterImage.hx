@@ -3,23 +3,30 @@ package effects;
 class AfterImage extends FlxTypedGroup<FlxSprite> {
 	public var target:FlxSprite;
 
-	public var delay:Float; // time between spawns
-	public var lifetime:Float; // how long each afterimage lasts
+	public var delay:Float;
+	public var lifetime:Float;
 	public var startAlpha:Float;
-	public var color:Int;
+	public var color:FlxColor = FlxColor.WHITE;
 
 	public var velocity:FlxPoint = FlxPoint.get();
 
 	var _timer:Float = 0;
 
-	public function new(target:FlxSprite, delay:Float = 0.03, lifetime:Float = 0.3, startAlpha:Float = 0.6, color:Int = 0xFFFFFFFF) {
+	/**
+	 * Creates a new AfterImage.
+	 * 
+	 * @param target The sprite to follow
+	 * @param delay Time between afterimage spawns
+	 * @param lifetime Duration each afterimage exists
+	 * @param startAlpha Initial transparency of afterimages
+	 */
+	public function new(target:FlxSprite, delay:Float = .03, lifetime:Float = .3, startAlpha:Float = .6) {
 		super();
 
 		this.target = target;
 		this.delay = delay;
 		this.lifetime = lifetime;
 		this.startAlpha = startAlpha;
-		this.color = color;
 	}
 
 	override public function update(elapsed:Float) {
@@ -43,9 +50,12 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 		}
 	}
 
+	/**
+	 * Creates and initializes a new afterimage sprite.
+	 * Copies visual properties from the target and assigns velocity.
+	 */
 	function spawnAfterimage() {
 		var spr:FlxSprite = recycle(FlxSprite);
-
 		spr.revive();
 
 		// copy position
@@ -53,6 +63,7 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 
 		// copy graphic/frame
 		spr.loadGraphicFromSprite(target);
+		spr.animation?.stop();
 
 		// copy transforms
 		spr.angle = target.angle;

@@ -4,6 +4,8 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 	public var target:FlxSprite;
 
 	public var delay:Float;
+	public var enabled:Bool = true;
+
 	public var lifetime:Float;
 	public var startAlpha:Float;
 	public var color:FlxColor = FlxColor.WHITE;
@@ -36,7 +38,7 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 
 		_timer += elapsed;
 
-		if (_timer >= delay) {
+		if (_timer >= delay && enabled) {
 			_timer = 0;
 			spawnAfterimage();
 		}

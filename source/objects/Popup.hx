@@ -8,6 +8,9 @@ enum PopupType {
 }
 
 class Popup extends FlxSprite {
+	public var baseAcc:FlxPoint = FlxPoint.get();
+	public var baseVel:FlxPoint = FlxPoint.get();
+
 	public var type:PopupType = NONE;
 	public var popUpTime:Float = 0;
 	public static var noVelocity:Bool = false;
@@ -71,11 +74,11 @@ class Popup extends FlxSprite {
 		if (!noVelocity) {
 			var rate:Float = i.playbackRate;
 			if (popUptype == RATING) {
-				velocity.set(-FlxG.random.int(0, 10) * rate + i.popupVel.x, -FlxG.random.int(140, 175) * rate + i.popupVel.y);
-				acceleration.set(i.popupAcc.x * baseRate, 550 * baseRate + i.popupAcc.y);
+				velocity.set(-FlxG.random.int(0, 10) * rate + baseVel.x, -FlxG.random.int(140, 175) * rate + baseVel.y);
+				acceleration.set(baseAcc.x * baseRate, 550 * baseRate + baseAcc.y);
 			} else {
-				velocity.set(FlxG.random.float(-5, 5) * rate + i.popupVel.x, -FlxG.random.int(130, 150) * rate + i.popupVel.y);
-				acceleration.set(i.popupAcc.x * baseRate, FlxG.random.int(250, 300) * baseRate + i.popupAcc.y);
+				velocity.set(FlxG.random.float(-5, 5) * rate + baseVel.x, -FlxG.random.int(130, 150) * rate + baseVel.y);
+				acceleration.set(baseAcc.x * baseRate, FlxG.random.int(250, 300) * baseRate + baseAcc.y);
 			}
 		}
 

@@ -1771,15 +1771,13 @@ class PlayState extends MusicBeatState {
 		note.rating = daRating.name;
 		songScore += daRating.score;
 
-		if (daRating.noteSplash && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
+		if (Settings.data.splashAlpha != 0 && daRating.noteSplash && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
 		if (!note.ratingDisabled) {
 			songHits++; totalPlayed++;
 			recalculateRating();
 		}
 	}
 
-	public var popupAcc:FlxPoint = FlxPoint.get();
-	public var popupVel:FlxPoint = FlxPoint.get();
 	function popUpScore(note:Note = null):Void {
 		var seperatedScore:Array<Null<Float>> = [];
 		var tempCombo:Null<Float> = combo;

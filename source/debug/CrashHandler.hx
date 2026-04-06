@@ -6,8 +6,20 @@ import openfl.events.ErrorEvent;
 import openfl.errors.Error;
 import lime.system.System;
 
+/**
+ * Global crash handler for capturing and logging uncaught errors.
+ *
+ * This class hooks into both native (C++/HL) and OpenFL error systems
+ * to ensure crashes are properly logged and reported.
+ */
 class CrashHandler {
-	public static function init() {
+	/**
+	 * Initializes the crash handler.
+	 *
+	 * Sets up platform-specific error handlers and registers
+	 * an OpenFL uncaught error listener.
+	 */
+	public static function init():Void {
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onError);
 		#elseif hl
@@ -16,7 +28,15 @@ class CrashHandler {
 		FlxG.stage.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onErrorOFL);
 	}
 
-	static function onErrorOFL(e:UncaughtErrorEvent) {
+	/**
+	 * Handles OpenFL uncaught errors.
+	 *
+	 * Extracts a readable error message from the event and forwards
+	 * it to the main error handler.
+	 *
+	 * @param e The uncaught error event.
+	 */
+	static function onErrorOFL(e:UncaughtErrorEvent):Void {
 		var message:String = '';
 		if (Std.isOfType(e.error, Error)) {
 			var err:Error = cast(e.error, Error);
@@ -30,6 +50,14 @@ class CrashHandler {
 		onError(message);
 	}
 
+	/**
+	 * Main crash handler logic.
+	 *
+	 * The report is saved to the `./crash/` directory and displayed
+	 * to the user before exiting the application.
+	 *
+	 * @param message The error message or stack trace.
+	 */
 	static function onError(message:String):Void {
 		final path:String = './crash/${FlxG.stage.application.meta.get('file')}_${Date.now().toString().replace(" ", "_").replace(":", "'")}.txt';
 		final defines:Map<String, Dynamic> = macros.DefinesMacro.defines;
@@ -56,6 +84,14 @@ class CrashHandler {
 		System.exit(1);
 	}
 
+	/**
+	 * Builds a formatted stack trace string from the current exception stack.
+	 *
+	 * Iterates through the call stack and formats each entry
+	 * into a human-readable format.
+	 *
+	 * @return A formatted stack trace string.
+	 */
 	static function getError():String {
 		var error:String = "";
 		for (stackItem in haxe.CallStack.exceptionStack(true)) {

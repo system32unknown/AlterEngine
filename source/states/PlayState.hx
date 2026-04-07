@@ -241,7 +241,7 @@ class PlayState extends MusicBeatState {
 		endCallback = endSong;
 
 		instance = this;
-		PauseSubState.songName = null; //Reset to default
+		PauseSubState.songName = null; // Reset to default
 		processor = new NoteProcessor();
 		
 		FlxG.sound.music?.stop();
@@ -431,7 +431,7 @@ class PlayState extends MusicBeatState {
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP2 = new HealthIcon(dad.healthIcon);
 		for (icon in [iconP1, iconP2]) {
-			icon.y = healthBar.y - (icon.height / 2);
+			icon.y = healthBar.y - (icon.frameHeight * .5);
 			icon.visible = !hideHud;
 			icon.alpha = Settings.data.healthBarAlpha;
 			if (Settings.data.healthTypes == 'Psych') icon.iconType = 'psych';

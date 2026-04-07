@@ -1,6 +1,6 @@
 package effects;
 
-class AfterImage extends FlxTypedGroup<FlxSprite> {
+class AfterImage extends #if (flixel < version("5.7.0")) FlxTypedGroup<FlxSprite> #else flixel.group.FlxSpriteContainer #end {
 	public var target:FlxSprite;
 
 	public var delay:Float;
@@ -8,9 +8,10 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 
 	public var lifetime:Float;
 	public var startAlpha:Float;
-	public var color:FlxColor = FlxColor.WHITE;
 
-	public var velocity:FlxPoint = FlxPoint.get();
+	public var _vel:FlxPoint = FlxPoint.get();
+	public var _accel:FlxPoint = FlxPoint.get();
+	public var _drag:FlxPoint = FlxPoint.get();
 
 	var _timer:Float = 0;
 
@@ -56,7 +57,7 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 	 * Creates and initializes a new afterimage sprite.
 	 * Copies visual properties from the target and assigns velocity.
 	 */
-	function spawnAfterimage() {
+	public function spawnAfterimage():Void {
 		var spr:FlxSprite = recycle(FlxSprite);
 		spr.revive();
 
@@ -69,6 +70,7 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 
 		// copy transforms
 		spr.angle = target.angle;
+		spr.origin.copyFrom(target.origin);
 		spr.scale.copyFrom(target.scale);
 		spr.offset.copyFrom(target.offset);
 		spr.flipX = target.flipX;
@@ -79,6 +81,8 @@ class AfterImage extends FlxTypedGroup<FlxSprite> {
 		spr.color = color;
 
 		// velocity
-		spr.velocity.copyFrom(velocity);
+		spr.velocity.copyFrom(_vel);
+		spr.acceleration.copyFrom(_accel);
+		spr.drag.copyFrom(_drag);
 	}
 }

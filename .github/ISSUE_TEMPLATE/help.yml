@@ -25,7 +25,6 @@ body:
       label: "What is your build target?"
       options:
         - "Windows x64"
-        - "Windows x86/x32"
         - "Linux"
         - "Mac"
         - "HashLink, or other build system"

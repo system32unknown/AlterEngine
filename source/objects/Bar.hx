@@ -36,7 +36,7 @@ class Bar extends FlxSpriteGroup {
 
 	/**
 	 * additive offset for the bg position
-	**/
+	 */
 	public var bgOffset:FlxPoint = FlxPoint.get(0, 0);
 
 	public function new(x:Float, y:Float, image:String = 'healthBar', ?valueFunction:Void->Float, boundX:Float = 0, boundY:Float = 1) {

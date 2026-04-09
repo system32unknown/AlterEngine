@@ -1,6 +1,6 @@
 package macros;
 
-#if (!display && macro)
+#if macro
 import haxe.macro.Expr;
 import haxe.macro.Context;
 
@@ -37,6 +37,10 @@ class FlxMacro {
 		}
 
 		return fields;
+	}
+
+	public static function initMacros():Void {
+		if (Context.defined("hscript_imporved") && !Context.defined("hscript")) haxe.macro.Compiler.define("hscript");
 	}
 }
 #end

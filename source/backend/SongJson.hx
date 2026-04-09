@@ -4,19 +4,19 @@ import haxe.ds.Vector;
 
 // Original code is haxe.format.JsonParser.hx
 /**
-	An implementation of JSON parser in Haxe but optimized.
-**/
+ * An implementation of JSON parser in Haxe but optimized.
+ */
 class SongJson {
 	/**
-		Parses given JSON-encoded `str` and returns the resulting object.
+	 * Parses given JSON-encoded `str` and returns the resulting object.
 
-		JSON objects are parsed into anonymous structures and JSON arrays
-		are parsed into `Array<Dynamic>`.
+	 * JSON objects are parsed into anonymous structures and JSON arrays
+	 * are parsed into `Array<Dynamic>`.
 
-		If given `str` is not valid JSON, an exception will be thrown.
+	 * If given `str` is not valid JSON, an exception will be thrown.
 
-		If `str` is null, the result is unspecified.
-	**/
+	 * If `str` is null, the result is unspecified.
+	 */
 	public static inline function parse(str:String):Dynamic {
 		return new SongJson(str).doParse();
 	}

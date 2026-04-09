@@ -53,7 +53,7 @@ class Ansi {
 		91, // RED
 		95, // MAGENTA
 		93, // YELLOW
-		97  // WHITE
+		97 // WHITE
 	];
 
 	// Index 0..15 maps to OpenFL/Flixel ARGB colors
@@ -73,7 +73,7 @@ class Ansi {
 		0xFFFF0000, // RED
 		0xFFFF00FF, // MAGENTA
 		0xFFFFFF00, // YELLOW
-		0xFFFFFFFF  // WHITE
+		0xFFFFFFFF // WHITE
 	];
 
 	static function idx(c:AnsiColor):Int return (c:Int);

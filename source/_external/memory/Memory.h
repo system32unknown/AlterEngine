@@ -70,6 +70,6 @@ size_t getCurrentRSS( ) {
 
 #else
     /* AIX, BSD, Solaris, and Unknown OS ------------------------ */
-    return (size_t)0L;          /* Unsupported. */
+    return (size_t)0L; * Unsupported. */
 #endif
 }

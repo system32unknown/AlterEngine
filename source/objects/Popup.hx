@@ -8,12 +8,12 @@ enum PopupType {
 }
 
 class Popup extends FlxSprite {
-	public var baseAcc:FlxPoint = FlxPoint.get();
-	public var baseVel:FlxPoint = FlxPoint.get();
+	public static var baseAcc:FlxPoint = FlxPoint.get();
+	public static var baseVel:FlxPoint = FlxPoint.get();
+	public static var noVelocity:Bool = false;
 
 	public var type:PopupType = NONE;
 	public var popUpTime:Float = 0;
-	public static var noVelocity:Bool = false;
 
 	final placement:Float = FlxG.width * .35;
 

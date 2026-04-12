@@ -40,7 +40,7 @@ class FlxMacro {
 	}
 
 	public static function initMacros():Void {
-		if (Context.defined("hscript_imporved") && !Context.defined("hscript")) haxe.macro.Compiler.define("hscript");
+		if (Context.defined("hscript_improved") && !Context.defined("hscript")) haxe.macro.Compiler.define("hscript");
 	}
 }
 #end

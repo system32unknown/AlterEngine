@@ -53,6 +53,13 @@ class AfterImage extends #if (flixel < version("5.7.0")) FlxTypedGroup<FlxSprite
 		}
 	}
 
+	public function spawnSingle(dir:FlxPoint):Void {
+		var oldVel:FlxPoint = _vel;
+		_vel.copyFrom(dir);
+		spawnAfterimage();
+		_vel.copyFrom(oldVel);
+	}
+
 	/**
 	 * Creates and initializes a new afterimage sprite.
 	 * Copies visual properties from the target and assigns velocity.

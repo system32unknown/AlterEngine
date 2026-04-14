@@ -77,13 +77,17 @@ class WeekData {
 	public static function reloadWeekFiles(isStoryMode:Null<Bool> = false) {
 		weeksList = [];
 		weeksLoaded.clear();
+
+		var directories:Array<String>;
+		var originalLength:Int;
 		#if MODS_ALLOWED
-		var directories:Array<String> = [Paths.mods(), Paths.getSharedPath()];
-		var originalLength:Int = directories.length;
+		directories = [Paths.mods()];
+		if (Mods.parseList().enabled.length == 0) directories.push(Paths.getSharedPath());
+		originalLength = directories.length;
 		for (mod in Mods.parseList().enabled) directories.push(Paths.mods('$mod/'));
 		#else
-		var directories:Array<String> = [Paths.getSharedPath()];
-		var originalLength:Int = directories.length;
+		directories = [Paths.getSharedPath()];
+		originalLength = directories.length;
 		#end
 
 		var sexList:Array<String> = Util.readTextFiles(Paths.getSharedPath('weeks/weekList.txt'));

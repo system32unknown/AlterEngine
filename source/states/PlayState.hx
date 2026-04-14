@@ -394,7 +394,7 @@ class PlayState extends MusicBeatState {
 		if (downScroll) timeTxt.y = FlxG.height - 35;
 		if (timeType == 'Song Name') timeTxt.text = SONG.song + ' - $storyDifficultyText' + (playbackRate != 1 ? ' (${playbackRate}x)' : '');
 
-		timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', () -> return songPercent, 0, 1);
+		timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', () -> return songPercent);
 		timeBar.scrollFactor.set();
 		timeBar.gameCenter(X);
 		timeBar.alpha = 0;
@@ -1114,7 +1114,7 @@ class PlayState extends MusicBeatState {
 	}
 
 	public var canResync:Bool = true;
-	public static var loaded:Bool = false;
+	var loaded:Bool = false;
 	override function closeSubState():Void {
 		super.closeSubState();
 		stagesFunc(stage -> stage.closeSubState());

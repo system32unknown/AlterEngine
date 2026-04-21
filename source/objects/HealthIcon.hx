@@ -183,7 +183,7 @@ class HealthIcon extends FlxSprite {
 	 * @param bopInfo {curBeat, playbackRate, gfSpeed, healthBarPercent} curBeat is mandatory, the rest are limited to PlayState.
 	 * @param iconAnim The name of the Animation, set to "Client"
 	 * @param type (0 = BF, 1 = DAD)
-	 * Values are necessary for proper calculations!!
+	 * Values are necessary for proper calculations.
 	 */
 	public dynamic function bop(bopInfo:BopInfo, iconAnim:String = "Settings", type:Int = 0):Void {
 		var requested:String = iconAnim.toLowerCase();

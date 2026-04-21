@@ -74,7 +74,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphabetLine> {
 		this.alignment = alignment;
 	}
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float):Void {
 		if (!isMenuItem) {
 			super.update(elapsed);
 			return;
@@ -85,7 +85,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphabetLine> {
 		if (changeY) y = FlxMath.lerp((targetY * 1.3 * distancePerItem.y) + spawnPos.y, y, lerpVal);
 	}
 
-	public function snapToPosition() {
+	public function snapToPosition():Void {
 		if (!isMenuItem) return;
 
 		if (changeX) x = (targetY * distancePerItem.x) + spawnPos.x;
@@ -97,7 +97,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphabetLine> {
 	// --------------- //
 	static final Y_PER_ROW:Float = 60;
 
-	@:noCompletion function updateText(newText:String, ?force:Bool = false) {
+	@:noCompletion function updateText(newText:String, ?force:Bool = false):Void {
 		if (text == newText && !force) return; // what's the point of regenerating
 
 		for (glyph in members) glyph.destroy();
@@ -136,7 +136,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphabetLine> {
 		glyphPos.put();
 	}
 
-	public function updateAlignment(align:AlphabetAlignment) {
+	public function updateAlignment(align:AlphabetAlignment):Void {
 		final totalWidth:Float = fieldWidth > 0 ? fieldWidth : width;
 		for (line in members) {
 			line.x = switch (align) {
@@ -204,7 +204,7 @@ class Alphabet extends FlxTypedSpriteGroup<AlphabetLine> {
 		return super.set_color(value);
 	}
 
-	override function destroy() {
+	override function destroy():Void {
 		distancePerItem.put();
 		super.destroy();
 	}
@@ -240,8 +240,6 @@ class AlphabetGlyph extends FlxSprite {
 	public var spawnPos:FlxPoint = FlxPoint.get();
 	public var letterOffset:Array<Float> = [0, 0];
 	public var curGlyph:Glyph = null;
-
-	public var parent:Alphabet;
 
 	public function new(x:Float = 0, y:Float = 0, char:String = "", ?type:AlphabetGlyphType = BOLD) {
 		super(x, y);

@@ -21,7 +21,6 @@
     - [ ] Title
     - [ ] Main Menu
     - [ ] PlayState
-    - [ ] Terminal (Ubuntu Terminal Style)
     - [ ] Character Selection
     - [ ] Mods Menu
     - [ ] Freeplay Menu
@@ -30,7 +29,6 @@
     - [ ] Option Menu
 - [ ] Rewrite Objects
     - [ ] Note and Strum Note
-    - [ ] Credits PopUp
 - [ ] New Conductor
 
 ### Characters List

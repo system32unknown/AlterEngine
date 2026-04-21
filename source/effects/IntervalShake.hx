@@ -134,7 +134,7 @@ class IntervalShake implements flixel.util.FlxDestroyUtil.IFlxDestroyable {
 		completionCallback = CompletionCallback;
 		startIntensity = StartIntensity;
 		endIntensity = EndIntensity;
-		initialOffset = new FlxPoint(Object.x, Object.y);
+		initialOffset = FlxPoint.get(Object.x, Object.y);
 		ease = Ease;
 		axes = FlxAxes.XY;
 		_secondsSinceStart = 0;
@@ -180,8 +180,7 @@ class IntervalShake implements flixel.util.FlxDestroyUtil.IFlxDestroyable {
 			progressCallback(this);
 
 		if (timer.loops > 0 && timer.loopsLeft == 0) {
-			object.x = initialOffset.x;
-			object.y = initialOffset.y;
+			object.setPosition(initialOffset.x, initialOffset.y);
 			if (completionCallback != null) completionCallback(this);
 
 			if (this.timer == timer) release();

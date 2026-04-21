@@ -34,7 +34,7 @@ class BezierUtil {
 	 * This is really just linear interpolation but whatever.
 	 */
 	public static function bezier2(p:Float, a:FlxPoint, b:FlxPoint):FlxPoint {
-		return new FlxPoint(mix2(p, a.x, b.x), mix2(p, a.y, b.y));
+		return FlxPoint.get(mix2(p, a.x, b.x), mix2(p, a.y, b.y));
 	}
 
 	/**
@@ -45,7 +45,7 @@ class BezierUtil {
 	 * @param c The end point.
 	 */
 	public static function bezier3(p:Float, a:FlxPoint, b:FlxPoint, c:FlxPoint):FlxPoint {
-		return new FlxPoint(mix3(p, a.x, b.x, c.x), mix3(p, a.y, b.y, c.y));
+		return FlxPoint.get(mix3(p, a.x, b.x, c.x), mix3(p, a.y, b.y, c.y));
 	}
 
 	/**
@@ -57,7 +57,7 @@ class BezierUtil {
 	 * @param d The end point.
 	 */
 	public static function bezier4(p:Float, a:FlxPoint, b:FlxPoint, c:FlxPoint, d:FlxPoint):FlxPoint {
-		return new FlxPoint(mix4(p, a.x, b.x, c.x, d.x), mix4(p, a.y, b.y, c.y, d.y));
+		return FlxPoint.get(mix4(p, a.x, b.x, c.x, d.x), mix4(p, a.y, b.y, c.y, d.y));
 	}
 
 	/**
@@ -70,6 +70,6 @@ class BezierUtil {
 	 * @param d The end point.
 	 */
 	public static function bezier5(p:Float, a:FlxPoint, b:FlxPoint, c:FlxPoint, d:FlxPoint, e:FlxPoint):FlxPoint {
-		return new FlxPoint(mix5(p, a.x, b.x, c.x, d.x, e.x), mix5(p, a.y, b.y, c.y, d.y, e.y));
+		return FlxPoint.get(mix5(p, a.x, b.x, c.x, d.x, e.x), mix5(p, a.y, b.y, c.y, d.y, e.y));
 	}
 }

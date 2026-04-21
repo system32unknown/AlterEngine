@@ -376,8 +376,6 @@ class FreeplayState extends MusicBeatState {
 				var songLowercase:String = songs[curSelected].name.toLowerCase();
 				var poop:String = Song.format(songLowercase, curDifficulty);
 
-				if (songLowercase == "enter terminal") return;
-
 				try {
 					if (Settings.data.disableGC) {
 						MemoryUtil.enable();
@@ -434,10 +432,6 @@ class FreeplayState extends MusicBeatState {
 			var songLowercase:String = Song.format(songFolder, curDifficulty);
 
 			if (songLowercase == "" || songLowercase.length < 1) return;
-			if (songLowercase == "enter-terminal-hard") {
-				FlxG.switchState(() -> new TerminalState());
-				return;
-			}
 
 			try {
 				if (Settings.data.disableGC) {

@@ -1,5 +1,6 @@
 package data;
 
+@:keep
 typedef SubtitleData = {
 	/**
 	 * The x position of the subtitle.

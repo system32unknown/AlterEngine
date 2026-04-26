@@ -187,7 +187,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 			FlxTimer.wait((snd.length / 1000) - .7, () -> {
 				MusicBeatState.skipNextTransIn = true;
 
-				PlayState.instance.unloadNotes();
+				PlayState.instance?.unloadNotes();
 				FlxG.resetState();
 			});
 		});

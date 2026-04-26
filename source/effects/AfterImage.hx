@@ -37,11 +37,12 @@ class AfterImage extends #if (flixel < version("5.7.0")) FlxTypedGroup<FlxSprite
 
 		if (target == null || !target.exists) return;
 
-		_timer += elapsed;
-
-		if (_timer >= delay && enabled) {
-			_timer = 0;
-			spawnAfterimage();
+		if (enabled) {
+			_timer += elapsed;
+			if (_timer >= delay) {
+				_timer = 0;
+				spawnAfterimage();
+			}
 		}
 
 		// update fade

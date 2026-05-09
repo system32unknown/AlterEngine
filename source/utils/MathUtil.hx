@@ -45,7 +45,7 @@ class MathUtil {
 	 * @param x			The input value to normalize.
 	 * @param min		The minimum value of the range.
 	 * @param max		The maximum value of the range.
-	 * @param isBound  If true (default), clamps the result to stay within [0, 1]. If false, the result may fall outside this range.
+	 * @param isBound	If true (default), clamps the result to stay within [0, 1]. If false, the result may fall outside this range.
 	 * @return			The normalized value of `x`, optionally clamped between 0 and 1.
 	 */
 	inline public static function normalize(x:Float, min:Float, max:Float, isBound:Bool = true):Float {
@@ -75,7 +75,6 @@ class MathUtil {
 
 		return result / amount;
 	}
-
 
 	/**
 	 * Fast inverse square root approximation.

@@ -36,8 +36,7 @@ class NativeFileSystem {
 	 */
 	public static function getBitmap(path:String):Null<BitmapData> {
 		if (!isModded(path)) {
-			if (openFlAssets.contains(path))
-				return OpenFlAssets.getBitmapData(path);
+			if (openFlAssets.contains(path)) return OpenFlAssets.getBitmapData(path);
 			return null;
 		}
 

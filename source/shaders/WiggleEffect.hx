@@ -18,7 +18,7 @@ class WiggleEffect {
 	public var isDistortBG(default, set):Bool = false;
 
 	public function new():Void {
-		shader.uTime.value = [0];
+		shader.uTime.value = [0.0];
 	}
 
 	public function update(elapsed:Float):Void {

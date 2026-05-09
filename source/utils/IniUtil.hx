@@ -66,7 +66,7 @@ class IniUtil {
 	}
 
 	/**
-	 * Strip an unquoted trailing inline comment, e.g. `foo  ; comment` → `foo` 
+	 * Strip an unquoted trailing inline comment, e.g. `foo; comment` → `foo` 
 	 */
 	static inline function stripInlineComment(s:String):String {
 		return RE_QUOTED.match(s) ? s : RE_COMMENT.replace(s, '');

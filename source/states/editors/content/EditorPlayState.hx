@@ -34,16 +34,12 @@ class EditorPlayState extends MusicBeatSubstate {
 	var combo:Int = 0;
 	var keysArray:Array<String> = ['note_left', 'note_down', 'note_up', 'note_right'];
 
-	var comboGroup:FlxSpriteGroup;
 	var noteGroup:FlxTypedGroup<FlxBasic>;
 
 	var songHits:Int = 0;
 	var songMisses:Int = 0;
 	var songLength:Float = 0;
 	var songSpeed:Float = 1;
-
-	var showComboNum:Bool = true;
-	var showRating:Bool = true;
 
 	// Originals
 	var startOffset:Float = 0;
@@ -98,7 +94,6 @@ class EditorPlayState extends MusicBeatSubstate {
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
-		comboGroup = new FlxSpriteGroup();
 		noteGroup = new FlxTypedGroup<FlxBasic>();
 
 		timeTxt = new FlxText(0, 19, 400, "", 32);
@@ -110,7 +105,6 @@ class EditorPlayState extends MusicBeatSubstate {
 		if (downScroll) timeTxt.y = FlxG.height - 44;
 		add(timeTxt);
 
-		add(comboGroup);
 		add(noteGroup);
 		noteGroup.add(strumLineNotes);
 
@@ -242,8 +236,9 @@ class EditorPlayState extends MusicBeatSubstate {
 	}
 
 	override function sectionHit() {
-		if (PlayState.SONG.notes[curSection] != null && PlayState.SONG.notes[curSection].changeBPM)
-			Conductor.bpm = PlayState.SONG.notes[curSection].bpm;
+		var curSecNote:Section = PlayState.SONG.notes[curSection];
+		if (curSecNote != null && curSecNote.changeBPM)
+			Conductor.bpm = curSecNote.bpm;
 		super.sectionHit();
 	}
 
@@ -421,53 +416,9 @@ class EditorPlayState extends MusicBeatSubstate {
 		note.rating = daRating.name;
 
 		if (!note.ratingDisabled) daRating.hits++;
-		if (daRating.noteSplash && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
+		if (Settings.data.splashAlpha != 0 && daRating.noteSplash && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
 
 		if (!note.ratingDisabled) songHits++;
-
-		if (!Settings.data.showComboCounter || (!showRating && !showComboNum)) return;
-		if (!Settings.data.comboStacking) comboGroup.forEachAlive((spr:FlxSprite) -> FlxTween.globalManager.completeTweensOf(spr));
-
-		final placement:Float = FlxG.width * .35;
-
-		var uiFolder:String = "";
-		var antialias:Bool = Settings.data.antialiasing;
-		final mult:Float = .7;
-
-		var comboOffset:Array<Array<Int>> = Settings.data.comboOffset;
-		var rating:FlxSprite = null;
-		if (showRating) {
-			rating = comboGroup.recycle(FlxSprite).loadGraphic(Paths.image(uiFolder + 'judgements/${daRating.image}' + PlayState.uiPostfix));
-			rating.gameCenter(Y).y -= 60 + comboOffset[0][1];
-			rating.x = placement - 40 + comboOffset[0][0];
-
-			rating.velocity.set(-FlxG.random.int(0, 10) * playbackRate, -FlxG.random.int(140, 175) * playbackRate);
-			rating.acceleration.set(playbackRate * playbackRate, 550 * playbackRate * playbackRate);
-			rating.antialiasing = antialias;
-			rating.setGraphicSize(rating.width * mult);
-			rating.updateHitbox();
-
-			comboGroup.add(rating);
-			FlxTween.tween(rating, {alpha: 0}, .2 / playbackRate, {onComplete: (_:FlxTween) -> {rating.kill(); rating.alpha = 1;}, startDelay: Conductor.crochet * .001 / playbackRate});
-		}
-
-		if (showComboNum) {
-			var comboSplit:Array<String> = Std.string(Math.abs(combo)).split('');
-			var daLoop:Int = 0;
-			for (i in [for (i in 0...comboSplit.length) Std.parseInt(comboSplit[i])]) {
-				var numScore:FlxSprite = comboGroup.recycle(FlxSprite).loadGraphic(Paths.image(uiFolder + 'judgements/number/num$i' + PlayState.uiPostfix));
-				numScore.setPosition(rating.x + (43 * daLoop++) - 50 + comboOffset[1][0], rating.y + 100 - comboOffset[1][1]);
-
-				numScore.velocity.set(FlxG.random.float(-5, 5) * playbackRate, -FlxG.random.int(130, 150) * playbackRate);
-				numScore.acceleration.set(playbackRate * playbackRate, FlxG.random.int(250, 300) * playbackRate * playbackRate);
-				numScore.antialiasing = antialias;
-				numScore.setGraphicSize(numScore.width * .5);
-				numScore.updateHitbox();
-
-				comboGroup.add(numScore);
-				FlxTween.tween(numScore, {alpha: 0}, .2 / playbackRate, {onComplete: (_:FlxTween) -> {numScore.kill(); numScore.alpha = 1;}, startDelay: Conductor.crochet * .002 / playbackRate});
-			}
-		}
 	}
 
 	function onKeyPress(event:KeyboardEvent):Void {
@@ -545,7 +496,7 @@ class EditorPlayState extends MusicBeatSubstate {
 		if (note.hitCausesMiss) {
 			noteMiss(note);
 			if (!note.isSustainNote) {
-				if (!note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
+				if (Settings.data.splashAlpha != 0 && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
 				invalidateNote(note);
 			} 
 			return;
@@ -592,11 +543,12 @@ class EditorPlayState extends MusicBeatSubstate {
 		grpNoteSplashes.add(splash);
 	}
 
-	function updateScore() {
+	function updateScore():Void {
 		scoreTxt.text = '${!Settings.data.showNPS ? '' : 'NPS: $nps/$maxNPS | '}' + 'Hits: $songHits | Misses: $songMisses';
 	}
 
-	function strumPlayAnim(isDad:Bool, id:Int, time:Float = 0) {
+	function strumPlayAnim(isDad:Bool, id:Int, time:Float = 0):Void {
+		if (!Settings.data.lightStrum) return;
 		var spr:StrumNote = (isDad ? opponentStrums : playerStrums).members[id];
 		if (spr != null && Settings.data.lightStrum) {
 			spr.playAnim('confirm', true);

@@ -760,7 +760,6 @@ class PlayState extends MusicBeatState {
 			setOnHScript('startedCountdown', true);
 			callOnHScript('onCountdownStarted');
 
-			var swagCounter:Int = 0;
 			moveCameraSection();
 			if (startOnTime > 0) {
 				clearNotesBefore(startOnTime);
@@ -771,8 +770,17 @@ class PlayState extends MusicBeatState {
 				return true;
 			}
 
+			if (!skipArrowStartTween) notes.forEachAlive((note:Note) -> {
+				if (Settings.data.opponentStrums || note.mustPress) {
+					note.copyAlpha = false;
+					note.alpha = note.multAlpha;
+					if (middleScroll && !note.mustPress) note.alpha *= .35;
+				}
+			});
+
 			var introSprites:Array<String> = getCountdownSpriteNames(stageUI);
 			var tick:Countdown = THREE;
+			var swagCounter:Int = 0;
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000 / playbackRate, (tmr:FlxTimer) -> {
 				charactersDance(tmr.loopsLeft);
 				switch (swagCounter) {
@@ -793,14 +801,6 @@ class PlayState extends MusicBeatState {
 						tick = GO;
 					case 4: tick = START;
 				}
-
-				if (!skipArrowStartTween) notes.forEachAlive((note:Note) -> {
-					if (Settings.data.opponentStrums || note.mustPress) {
-						note.copyAlpha = false;
-						note.alpha = note.multAlpha;
-						if (middleScroll && !note.mustPress) note.alpha *= .35;
-					}
-				});
 
 				stagesFunc((stage:BaseStage) -> stage.countdownTick(tick, swagCounter));
 				callOnHScript('onCountdownTick', [tick, swagCounter]);
@@ -1730,8 +1730,8 @@ class PlayState extends MusicBeatState {
 		return true;
 	}
 
-	public function unloadNotes():Void {
-		unspawnNotes.resize(0);
+	public function unloadNotes(clearNote:Bool = true):Void {
+		if (clearNote) unspawnNotes.resize(0);
 		loaded = false;
 	}
 

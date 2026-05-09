@@ -8,7 +8,7 @@ enum abstract AnsiStyle(Int) from Int to Int {
 	public var UNDERLINE:AnsiStyle = 4; // 4m
 	public var BLINK:AnsiStyle = 5; // 5m
 	public var BLINK_FAST:AnsiStyle = 6; // 6m
-	public var REVERSE:AnsiStyle  = 7; // 7m
+	public var REVERSE:AnsiStyle = 7; // 7m
 	public var HIDDEN:AnsiStyle = 8; // 8m
 	public var STRIKETHROUGH:AnsiStyle = 9; // 9m
 }

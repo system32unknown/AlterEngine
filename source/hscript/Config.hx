@@ -11,4 +11,9 @@ class Config {
 	// These are the module names
 	public static final DISALLOW_CUSTOM_CLASSES = [];
 	public static final DISALLOW_ABSTRACT_AND_ENUM = [];
+
+	@:unreflective
+	public static final IMPORT_BLACKLIST:Array<String> = [
+		// "flixel.FlxG"
+	];
 }

@@ -21,8 +21,7 @@ import hxgamemode.GamemodeClient;
 #end
 
 class Main extends Sprite {
-	public static var engineVer:SemanticVersion = '0.1.5';
-	public static var fnfVer:SemanticVersion = '0.7.3';
+	public static final engineVer:SemanticVersion = '0.1.5';
 
 	public static var noTerminalColor:Bool = false;
 	public static var verbose:Bool = false;

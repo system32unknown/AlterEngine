@@ -45,7 +45,7 @@ class Util {
 	 */
 	public static function checkForUpdates(url:String = null):Array<String> {
 		if (url == null || url.length == 0)
-			url = "https://raw.githubusercontent.com/system32unknown/FNF-BabyShark/main/CHANGELOG.md";
+			url = "https://raw.githubusercontent.com/system32unknown/AlterEngine/main/CHANGELOG.md";
 
 		var returnedData:Array<String> = [];
 		var version:String = Main.engineVer;

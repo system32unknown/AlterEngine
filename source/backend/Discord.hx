@@ -98,7 +98,7 @@ class DiscordClient {
 		presence.state = state;
 		presence.details = details;
 		presence.largeImageKey = largeImageKey;
-		presence.largeImageText = 'Baby Shark\'s Big Funkin!';
+		presence.largeImageText = 'Alter Engine';
 		// Obtained times are in milliseconds so they are divided so Discord can use it
 		presence.startTimestamp = Std.int(startTimestamp / 1000);
 		presence.endTimestamp = Std.int(endTimestamp / 1000);

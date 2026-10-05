@@ -105,7 +105,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu {
 		addOption(new Option('Time Bar:', "What should the Time Bar display?", 'timeBarType', STRING, ['Time Left', 'Time Elapsed', 'Song Name', 'Time Position', 'Name Left', 'Name Elapsed', 'Name Time Position', 'Disabled']));
 		addOption(new Option('Flashing Lights', "Uncheck this if you're sensitive to flashing lights!", 'flashing'));
 
-		var option:Option = new Option('Icon Bop:', "Select icon bop animation on a beat hit.", 'iconBopType', STRING, ['Old', 'Psych', 'Dave', 'GoldenApple', 'Custom']);
+		var option:Option = new Option('Icon Bop:', "Select icon bop animation on a beat hit.", 'iconBopType', STRING, ['Old', 'Psych', 'Dave', 'Swing', 'Custom']);
 		iconOption = option;
 		addOption(option);
 		var option:Option = new Option('Health Bar Type:', "What should the Health Bar Types?", 'healthTypes', STRING, ['Vanilla', 'Psych']);

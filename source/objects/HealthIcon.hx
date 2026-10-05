@@ -155,7 +155,7 @@ class HealthIcon extends FlxSprite {
 		super.update(elapsed);
 
 		// keep existing behavior
-		if (Std.isOfType(FlxG.state, PlayState) && (Settings.data.iconBopType == 'Dave' || Settings.data.iconBopType == 'GoldenApple'))
+		if (Std.isOfType(FlxG.state, PlayState) && (Settings.data.iconBopType == 'Dave' || Settings.data.iconBopType == 'Swing'))
 			offset.set(Std.int(FlxMath.bound(width - ICON_TARGET, 0)), Std.int(FlxMath.bound(height - ICON_TARGET, 0)));
 
 		if (sprTracker != null) setPosition(sprTracker.x + sprTracker.width + 12, sprTracker.y - 30);
@@ -206,7 +206,7 @@ class HealthIcon extends FlxSprite {
 					setGraphicSize(Std.int(width + (50 * inv)), Std.int(height - (25 * inv)));
 				}
 				iconSizeResetTime = .8;
-			case "goldenapple":
+			case "swing":
 				var everyOther:Bool = (info.curBeat % (info.gfSpeed * 2)) == 0;
 				var iconAngle:Float = everyOther ? -15 : 15;
 

@@ -64,10 +64,6 @@ class CreditsState extends MusicBeatState {
 		['Billy Bobbo',			'billy',			'Moral Support & Idea Suggesting',								'https://x.com/BillyBobboLOL',		'FF0000'],
 		['Steph45',				'Steph45',			'Minor programming, Moral support',								'https://x.com/Stats451',			'FFF729'],
 		['T5mpler',				'T5mpler',			'Programmer & Supporter',										'https://x.com/RealT5mpler',		'363B59'],
-		[''],
-		['Golden Apple'],
-		['Sky!',				'Sky',				'Creator, Charter, Composer, Artist, Programmer',				'https://x.com/SkyFactorial',		'5C89BF'],
-		['Lancey',				'lancey',			'Artist',														'https://x.com/Lancey170',			'00FF5E']
 	];
 
 	static var babyshark(default, never):Array<Array<String>> = [

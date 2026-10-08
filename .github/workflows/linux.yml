@@ -1,11 +1,5 @@
 name: Linux Build
 on:
-  workflow_dispatch:
-    inputs:
-      save-artifact:
-        type: boolean
-        description: Save the build artifact to Github Actions
-        default: true
   push:
 
 env:
@@ -53,7 +47,6 @@ jobs:
         run: haxelib run lime build linux
 
       - name: Uploading artifact
-        if: ${{ github.event.inputs.save-artifact }}
         uses: actions/upload-artifact@main
         with:
           name: Alter Engine (Linux)

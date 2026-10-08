@@ -154,7 +154,7 @@ class HScript extends AlterHscript {
 			"engine" => {
 				app_version: Application.current.meta.get('version'),
 				hash: GitCommit.commitHash.trim(),
-				name: "Alter Engine"
+				name: "AlterEngine"
 			}
 		];
 	}

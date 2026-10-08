@@ -32,7 +32,7 @@ class Project extends HXProject {
 	/**
 	 * The game's name. Used as the default window title.
 	 */
-	static final TITLE:String = "Alter Engine";
+	static final TITLE:String = "AlterEngine";
 
 	/**
 	 * A package name used for identifying the app on various app stores.
@@ -135,7 +135,6 @@ class Project extends HXProject {
 	//
 	// CONFIGURATION FUNCTIONS
 	//
-
 	public function new():Void {
 		super();
 
@@ -146,13 +145,13 @@ class Project extends HXProject {
 		#end
 
 		flair();
+		displayTarget();
+		configureFeatureFlags();
 		configureApp();
 		configureOutputDir();
 
 		if (isRun() || isInstall()) return; // These commands dont really need much in order to run so to improve the speed, we return here.
 
-		displayTarget();
-		configureFeatureFlags();
 		configureCompileDefines();
 		configureHaxelibs();
 		configureAssets();
@@ -166,7 +165,7 @@ class Project extends HXProject {
 	 * Do something before building, display some ASCII or something IDK
 	 */
 	function flair():Void {
-		info("Alter Engine - " + VERSION);
+		info("AlterEngine - " + VERSION);
 		info("Initializing build...");
 
 		var branch:String = getGitBranch();
@@ -184,6 +183,7 @@ class Project extends HXProject {
 	 */
 	function configureApp():Void {
 		this.meta.title = TITLE;
+
 		this.meta.version = VERSION;
 		this.meta.packageName = PACKAGE_NAME;
 		this.meta.company = COMPANY;
@@ -202,12 +202,12 @@ class Project extends HXProject {
 		// Set the window size.
 		this.window.width = 1280;
 		this.window.height = 720;
-
 		// Black background on release builds, magenta on debug builds.
 		this.window.background = FEATURE_DEBUG_FUNCTIONS.isEnabled(this) ? 0xFFFF00FF : 0xFF000000;
 
 		this.window.hardware = true;
 		this.window.vsync = false;
+		this.window.depthBuffer = false;
 		this.window.allowHighDPI = !isMac();
 
 		if (isDesktop()) {
@@ -226,23 +226,16 @@ class Project extends HXProject {
 			case Platform.WINDOWS: info('Target Platform: Windows');
 			case Platform.MAC: info('Target Platform: MacOS');
 			case Platform.LINUX: info('Target Platform: Linux');
-			case Platform.ANDROID: info('Target Platform: Android');
-			case Platform.IOS: info('Target Platform: IOS');
-			case Platform.HTML5: info('Target Platform: HTML5');
 			default: error('Unsupported platform! (got $target)');
 		}
 
-		switch (this.platformType) {
-			case PlatformType.DESKTOP: info('Platform Type: Desktop');
-			case PlatformType.MOBILE: info('Platform Type: Mobile');
-			case PlatformType.WEB: info('Platform Type: Web');
-			case PlatformType.CONSOLE: info('Platform Type: Console');
-			default: error('Unknown platform type! (got $platformType)');
-		}
+		if (this.platformType == PlatformType.DESKTOP) info('Platform Type: Desktop');
+		else error('Unknown platform type! (got $platformType)');
 
 		// Print whether we are using HXCPP, HashLink, or something else.
 		if (isWeb()) info('Target Language: JavaScript (HTML5)');
-		else info('Target Language: C++');
+		else if (isCPP()) info('Target Language: C++');
+		else error('Unsupported target language!');
 
 		for (arch in this.architectures) {
 			// Display the list of target architectures.
@@ -381,7 +374,7 @@ class Project extends HXProject {
 			info("ULTRA_OPTIMIZED: experimental max-speed build enabled (native target)");
 		}
 
-		if (command == "update" || command == "display" || hasDefine("display") || hasDefine("display_details")) {
+		if (command == "update" || isDisplay() || hasDefine("display") || hasDefine("display_details")) {
 			unsetHaxedef("HSCRIPT_ABSTRACT_SUPPORT");
 			unsetHaxedef("CUSTOM_CLASSES");
 		}
@@ -397,8 +390,7 @@ class Project extends HXProject {
 		info('Output directory: $buildDir');
 
 		// trailing slash might not be needed, works fine on macOS without it, but I haven't tested on Windows!
-		buildDir += "/";
-		app.path = buildDir;
+		app.path = buildDir + "/";
 	}
 
 	function configureHaxelibs():Void {
@@ -504,7 +496,7 @@ class Project extends HXProject {
 	function configureIcons():Void {
 		info('Configuring application icons...');
 
-		if (isLinux() || isMac()) {
+		if (isMac()) {
             var iconOGOverride:Icon = new Icon("icons/iconOG.png");
 			iconOGOverride.path = 'icon.png';
             this.icons.push(iconOGOverride);

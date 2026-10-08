@@ -21,8 +21,8 @@ class FunkinCache extends openfl.utils.AssetCache {
 	public static function init() {
 		openfl.utils.Assets.cache = new FunkinCache();
 
-		FlxG.signals.preStateSwitch.add(() -> instance.moveToSecondLayer());
-		FlxG.signals.postStateSwitch.add(() -> instance.clearSecondLayer());
+		FlxG.signals.preStateSwitch.add(() -> instance.clearSecondLayer());
+		FlxG.signals.postStateSwitch.add(() -> instance.moveToSecondLayer());
 	}
 
 	public function moveToSecondLayer() {
@@ -35,10 +35,7 @@ class FunkinCache extends openfl.utils.AssetCache {
 	}
 
 	public function clearSecondLayer() {
-		for (k in bitmapData2.keys()) {
-			FlxG.bitmap.removeByKey(k);
-			LimeAssets.cache.image.remove(k);
-		}
+		for (k in bitmapData2.keys()) LimeAssets.cache.image.remove(k);
 		for (k in font2.keys()) LimeAssets.cache.font.remove(k);
 		for (k in sound2.keys()) LimeAssets.cache.audio.remove(k);
 

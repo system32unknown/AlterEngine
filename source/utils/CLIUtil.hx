@@ -74,7 +74,6 @@ class CLIUtil {
 	 */
 	static function cleanArgs(args:Array<String>):Array<String> {
 		var result:Array<String> = [];
-
 		if (args == null || args.length == 0) return result;
 
 		return args.map(function(arg:String):String {

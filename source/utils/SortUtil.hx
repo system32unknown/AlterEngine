@@ -30,7 +30,6 @@ class SortUtil {
 	public static function uppercaseAlphabetically(a:String, b:String):Int {
 		a = a.toUpperCase();
 		b = b.toUpperCase();
-
 		return alphabetically(a, b);
 	}
 }

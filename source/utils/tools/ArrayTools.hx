@@ -35,17 +35,6 @@ class ArrayTools {
 	}
 
 	/**
-	 * Returns true if `superset` contains all elements of `subset`.
-	 * @param subset The array containing the elements to query for.
-	 * @param superset The array to query for each element.
-	 * @return Weather `superset` contains all elements of `subset`.
-	 */
-	public static function isSubset<T>(subset:Array<T>, superset:Array<T>):Bool {
-		// Switch it around.
-		return isSuperset(superset, subset);
-	}
-
-	/**
 	 * Like `join` but adds a word before the last element.
 	 * @param array The array to join.
 	 * @param separator The separator to use between elements.

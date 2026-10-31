@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="glitchHeading.png">
-	<!-- Created using the Spritesheet and XML generator -->
-	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
-	<SubTexture name="glitchHeading0000" x="0" y="162" width="404" height="54" frameX="2" frameY="2" frameWidth="400" frameHeight="50"/>
-	<SubTexture name="glitchHeading0001" x="0" y="0" width="404" height="54" frameX="2" frameY="2" frameWidth="400" frameHeight="50"/>
-	<SubTexture name="glitchHeading0002" x="0" y="54" width="404" height="54" frameX="2" frameY="2" frameWidth="400" frameHeight="50"/>
-	<SubTexture name="glitchHeading0003" x="0" y="108" width="404" height="54" frameX="2" frameY="2" frameWidth="400" frameHeight="50"/>
-</TextureAtlas>

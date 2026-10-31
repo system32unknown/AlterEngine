@@ -480,7 +480,7 @@ class PlayState extends MusicBeatState {
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
 		if (Settings.data.hitsoundVolume > 0) Paths.sound('hitsounds/${Std.string(Settings.data.hitsoundTypes).toLowerCase()}');
-		if (!Settings.data.ghostTapping) for (i in 1...4) Paths.sound('missnote$i');
+		if (!Settings.data.ghostTapping) for (i in 1...4) Paths.sound('missnotes/missnote$i');
 		Paths.image('alphabet');
 
 		if (PauseSubState.songName != null) Paths.music(PauseSubState.songName);
@@ -1909,7 +1909,7 @@ class PlayState extends MusicBeatState {
 		if (Settings.data.ghostTapping) return; // fuck it
 
 		noteMissCommon(direction);
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(.1, .2));
+		FlxG.sound.play(Paths.soundRandom('missnotes/missnote', 1, 3), FlxG.random.float(.1, .2));
 		stagesFunc((stage:BaseStage) -> stage.noteMissPress(direction));
 		callOnHScript('noteMissPress', [direction]);
 	}

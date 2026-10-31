@@ -163,7 +163,7 @@ class CharacterSelectionState extends MusicBeatState {
 		if (Controls.justPressed('accept')) {
 			if (isLocked(characters[current].forms[curForm].name)) {
 				FlxG.camera.shake(.05, .1);
-				FlxG.sound.play(Paths.sound('missnote1'), .9);
+				FlxG.sound.play(Paths.sound('missnotes/missnote1'), .9);
 				return;
 			}
 

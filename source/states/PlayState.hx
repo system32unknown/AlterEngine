@@ -856,11 +856,9 @@ class PlayState extends MusicBeatState {
 	public dynamic function updateScoreText():Void {
 		var tempText:String = '${!Settings.data.showNPS ? '' : Language.getPhrase('nps_text', 'NPS: {1}/{2}', [processor.nps, processor.npsMax])}';
 		tempText += Settings.data.showNPS ? ' | ' : '';
-		if (!cpuControlled) {
-			tempText += Language.getPhrase('score_text', 'Score: {1} ', [flixel.util.FlxStringUtil.formatMoney(songScore, false)]);
-			if (!instakillOnMiss) tempText += Language.getPhrase('miss_text', '| Misses: {1} ', [songMisses]); 
-			tempText += Language.getPhrase('accuracy_text', '| Accuracy: {1}% |', [ratingAccuracy]) + (totalPlayed != 0 ? ' (${Language.getPhrase(ratingFC)}) ${Language.getPhrase('rating_$ratingName', ratingName)}' : ' ?');
-		} else tempText += Language.getPhrase('hits_text', 'Hits: {1}', [combo]);
+		tempText += Language.getPhrase('score_text', 'Score: {1} ', [flixel.util.FlxStringUtil.formatMoney(songScore, false)]);
+		if (!instakillOnMiss) tempText += Language.getPhrase('miss_text', '| Misses: {1} ', [songMisses]); 
+		tempText += Language.getPhrase('accuracy_text', '| Accuracy: {1}% |', [ratingAccuracy]) + (totalPlayed != 0 ? ' (${Language.getPhrase(ratingFC)}) ${Language.getPhrase('rating_$ratingName', ratingName)}' : ' ?');
 		scoreTxt.text = tempText;
 	}
 
@@ -1769,12 +1767,13 @@ class PlayState extends MusicBeatState {
 		note.ratingMod = daRating.ratingMod;
 		if (!note.ratingDisabled) daRating.hits++;
 		note.rating = daRating.name;
-		songScore += daRating.score;
-
 		if (Settings.data.splashAlpha != 0 && daRating.noteSplash && !note.noteSplashData.disabled) spawnNoteSplashOnNote(note);
-		if (!note.ratingDisabled) {
-			songHits++; totalPlayed++;
-			recalculateRating();
+		if (!cpuControlled) {
+			songScore += daRating.score;
+			if (!note.ratingDisabled) {
+				songHits++; totalPlayed++;
+				recalculateRating();
+			}
 		}
 	}
 

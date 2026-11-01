@@ -1,10 +1,14 @@
 name: Linux Build
 on:
   push:
+  workflow_call:
+    inputs:
+      buildFlags:
+        required: false
+        type: string
 
 env:
   HAXE_VERSION: 4.3.7
-  HXCPP_COMPILE_CACHE: ${{ github.workspace }}/.hxcpp_cache
 
 jobs:
   build:
@@ -44,7 +48,7 @@ jobs:
           haxelib run hxpkg install --force
 
       - name: Compile
-        run: haxelib run lime build linux
+        run: haxelib run lime build linux -D ${{ inputs.buildFlags || 'GITHUB_BUILD' }}
 
       - name: Uploading artifact
         uses: actions/upload-artifact@main

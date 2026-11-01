@@ -3,7 +3,8 @@
 		"profile": "default",
 		"pkgs": [
 			{
-				"name": "lime"
+				"name": "lime",
+				"link": "https://github.com/JS-Engine-things/lime-8.1.2"
 			},
 			{
 				"name": "openfl",

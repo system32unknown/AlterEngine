@@ -68,10 +68,6 @@ class Project extends HXProject {
 	 */
 	static final COMPANY:String = "Altertoriel";
 
-	//
-	// ASSET FILTERS
-	//
-
 	/**
 	 * Asset path globs to always exclude from asset libraries.
 	 */
@@ -92,6 +88,7 @@ class Project extends HXProject {
 	static final ALTER_DEBUG:FeatureFlag = "ALTER_DEBUG";
 	static final MULTITHREADED_LOADING:FeatureFlag = "MULTITHREADED_LOADING";
 	static final SHOW_LOADING_SCREEN:FeatureFlag = "SHOW_LOADING_SCREEN";
+	static final GITHUB_BUILD:FeatureFlag = "GITHUB_BUILD";
 
 	/**
 	 * `-DULTRA_OPTIMIZED` (WIP / EXPERIMENTAL max-speed build flag).
@@ -145,19 +142,15 @@ class Project extends HXProject {
 		#end
 
 		flair();
+		configureApp();
+
 		displayTarget();
 		configureFeatureFlags();
-		configureApp();
-		configureOutputDir();
-
-		if (isRun() || isInstall()) return; // These commands dont really need much in order to run so to improve the speed, we return here.
-
 		configureCompileDefines();
+		configureOutputDir();
 		configureHaxelibs();
 		configureAssets();
-		configureAL();
-
-		if (!isLinux()) configureIcons();
+		configureIcons();
 		if (isCPP()) buildHxCppTools();
 	}
 
@@ -229,33 +222,18 @@ class Project extends HXProject {
 			default: error('Unsupported platform! (got $target)');
 		}
 
-		if (this.platformType == PlatformType.DESKTOP) info('Platform Type: Desktop');
-		else error('Unknown platform type! (got $platformType)');
-
-		// Print whether we are using HXCPP, HashLink, or something else.
-		if (isWeb()) info('Target Language: JavaScript (HTML5)');
-		else if (isCPP()) info('Target Language: C++');
+		if (isCPP()) info('Target Language: C++');
 		else error('Unsupported target language!');
 
 		for (arch in this.architectures) {
 			// Display the list of target architectures.
 			switch (arch) {
-				case Architecture.X86: info('Architecture: x86');
 				case Architecture.X64: info('Architecture: x64');
-				case null:
-					if (!isWeb()) error('Unsupported architecture (got null on non-web platform)');
-					else info('Architecture: Web');
+				case Architecture.ARM64: info('Architecture: ARMx64');
+				case null: error('Unsupported architecture (got null on non-web platform)');
 				default: error('Unsupported architecture (got $arch)');
 			}
 		}
-	}
-
-	/**
-	 * For desktop platforms, copy the OpenALSoft config file into the build to improve audio quality.
-	 */
-	function configureAL():Void {
-		if (!isDesktop()) return;
-		addAsset("alsoft.txt", 'plugins/alsoft.${isWindows() ? "ini" : "conf"}');
 	}
 
 	/**
@@ -309,6 +287,14 @@ class Project extends HXProject {
 			setHaxedef("HSCRIPT_ABSTRACT_SUPPORT");
 		}
 
+		if (GITHUB_BUILD.isDisabled(this)) {
+			// HXCPP caching, which you can carry across projects
+			if (!isWindows()) setHaxedef("HXCPP_COMPILE_CACHE", "~/.hxcpp_cache");
+			else setHaxedef("HXCPP_COMPILE_CACHE", "C:/.hxcpp_cache");
+
+			setHaxedef("HXCPP_CACHE_MB", "4000");
+		}
+
 		if (FEATURE_DEBUG_FUNCTIONS.isDisabled(this)) {
 			setHaxedef("no-deprecation-warnings");
 			setHaxedef("FLX_NO_DEBUG"); // If we aren't using the Flixel debugger, strip it out.
@@ -342,7 +328,7 @@ class Project extends HXProject {
 			setHaxedef("absolute-paths"); // Fix source locations so Tracy can see them
 		}
 
-		if (ULTRA_OPTIMIZED.isEnabled(this) && !isWeb()) {
+		if (ULTRA_OPTIMIZED.isEnabled(this)) {
 			// WIP: experimental max-speed build. See the flag doc above.
 			// hxcpp 4.3.2 has NO HXCPP_OPTIMIZE_SPEED/SIZE/O3 defines (grep
 			// toolchain + tools = zero hits): MSVC already emits /O2 in
@@ -366,11 +352,26 @@ class Project extends HXProject {
 			// segfaults catchable as haxe exceptions instead of hard crashes.
 			// Removing it would crash the game instead of showing the crash
 			// screen; the overhead is negligible so we keep it.
+
+			// ENABLE: link-time codegen (whole-program LTCG/LTO).
+			// msvc-toolchain.xml:83 → -GL (compile), :123/:148 → -LTCG (link).
+			// linux-toolchain.xml:31, mac-toolchain.xml:51 → -flto.
+			// HXCPP_FAST_LINK must be unset first so hxcpp uses full LTCG
+			// rather than HXCPP_LTCG_INCREMENTAL (finish-setup.xml:34).
+			unsetHaxedef("HXCPP_FAST_LINK");
 			setHaxedef("HXCPP_OPTIMIZE_LINK");
 
 			// FORCE: analyzer-optimize is normally only set in !isDebug(); ensure it
 			// regardless of build type when ULTRA is on.
 			setHaxedef("analyzer-optimize");
+
+			// DCE: keep "-dce no" (already in haxeflags above). This game
+			// is moddable with heavy runtime reflection (128+ Reflect.* calls
+			// across 15+ source files, plus hscript-improved dynamic dispatch).
+			// -dce full would strip dead code that mods may reference via
+			// Reflect.field/callMethod at runtime → null-access crashes.
+			// Safer to keep -dce no and rely on analyzer-optimize instead.
+
 			info("ULTRA_OPTIMIZED: experimental max-speed build enabled (native target)");
 		}
 
@@ -387,10 +388,9 @@ class Project extends HXProject {
 		// we use a dedicated 'tracy' folder, since it generally needs a recompile when in use
 		if (FEATURE_DEBUG_TRACY.isEnabled(this)) buildDir += "-tracy";
 
+		buildDir += "/";
 		info('Output directory: $buildDir');
-
-		// trailing slash might not be needed, works fine on macOS without it, but I haven't tested on Windows!
-		app.path = buildDir + "/";
+		app.path = buildDir;
 	}
 
 	function configureHaxelibs():Void {
@@ -414,7 +414,7 @@ class Project extends HXProject {
 		if (isDebug() && isCPP()) addHaxelib('hxcpp-debug-server'); // VSCode debug support
 
 		if (VIDEOS_ALLOWED.isEnabled(this)) addHaxelib('hxvlc'); // Video playback
-		if (isLinux()) addHaxelib('hxgamemode'); // FeralInteractive gamemode
+		if (isLinux() && !isDebug()) addHaxelib('hxgamemode'); // FeralInteractive gamemode
 		if (DISCORD_ALLOWED.isEnabled(this)) addHaxelib('hxdiscord_rpc'); // Discord API
 
 		if (FEATURE_FUNKVIS.isEnabled(this)) {
@@ -494,18 +494,9 @@ class Project extends HXProject {
 	 * Configure the application's favicon and executable icon.
 	 */
 	function configureIcons():Void {
-		info('Configuring application icons...');
-
-		if (isMac()) {
-            var iconOGOverride:Icon = new Icon("icons/iconOG.png");
-			iconOGOverride.path = 'icon.png';
-            this.icons.push(iconOGOverride);
-		}
 		
 		for (size in [16, 32, 64]) addIcon('icons/icon${size}.png', size);
 		addIcon("icons/iconOG.png");
-
-		info('Done configuring icons.');
 	}
 
 	//
